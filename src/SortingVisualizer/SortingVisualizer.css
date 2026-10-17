@@ -21,8 +21,9 @@
   } */
   
   /* .bar-value {
-    margin-bottom: 5px; /* Adjust the spacing between value and the bar's top */
-   */
+    margin-bottom: 5px;
+    adjust the spacing between value and the bar's top
+  } */
   
    .visualizer-container {
     display: flex;

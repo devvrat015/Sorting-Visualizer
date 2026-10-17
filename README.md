@@ -1,70 +1,97 @@
-# Getting Started with Create React App
+# Sorting Visualizer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive web app that animates classic sorting algorithms as colored bars, built with React (Create React App). Generate a random array, pick a sorting algorithm, and watch comparisons and swaps play out step by step with adjustable speed and array size.
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- **Four sorting algorithms**, each with its own animation pipeline:
+  - Bubble Sort
+  - Insertion Sort
+  - Merge Sort
+  - Heap Sort
+- **Live bar visualization** — bars are colored red while being compared and green once written back in place, with the numeric value shown on each bar.
+- **Generate New Array** button to instantly produce a fresh random array.
+- **Array size slider** (10–40 bars) and **speed slider** to control animation pacing.
+- **Light / Dark mode** toggle.
+- Algorithms are precomputed into an *animations* array (compare, compare, overwrite triplets), so the UI stays smooth and deterministic.
 
-### `npm start`
+## Tech Stack
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- React 18 (class components, CRA / react-scripts 5)
+- Plain CSS (`src/SortingVisualizer/SortingVisualizer.css`)
+- No external UI or animation libraries
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Project Structure
 
-### `npm test`
+```
+src/
+├── App.js                              # Root component
+├── index.js                            # Entry point
+├── sortingAlgorithms/
+│   └── sortingAlgorithms.js            # Merge/Bubble/Heap/Insertion animation generators
+└── SortingVisualizer/
+    ├── SortingVisualizer.jsx           # Main UI + animation player
+    └── SortingVisualizer.css           # Styles / themes
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Getting Started
 
-### `npm run build`
+### Prerequisites
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Node.js 16+ and npm
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Local Development
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+npm start
+```
 
-### `npm run eject`
+Opens the app at [http://localhost:3000](http://localhost:3000). The page hot-reloads on edits.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Production Build
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm run build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Outputs an optimized static build to the `build/` folder.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Tests
 
-## Learn More
+```bash
+npm test
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Runs the CRA test runner in watch mode.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Deploying to Vercel
 
-### Code Splitting
+The project is already Vercel-ready (`vercel.json` is included; build command `npm run build`, output `build`).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+1. Push the repository to GitHub/GitLab/Bitbucket.
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repo.
+3. Vercel auto-detects Create React App — keep the defaults and click **Deploy**.
 
-### Analyzing the Bundle Size
+Or deploy from the CLI:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm i -g vercel
+vercel        # preview deployment
+vercel --prod # production deployment
+```
 
-### Making a Progressive Web App
+No environment variables are required.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## How It Works
 
-### Advanced Configuration
+Each algorithm in `sortingAlgorithms.js` doesn't sort for display directly — it records every step into an `animations` list:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- **Steps 1–2** mark two indices as *being compared* (bars flash red, then return to green).
+- **Step 3** overwrites the value at an index (bar height animates to the new value).
 
-### Deployment
+`SortingVisualizer.jsx` plays that list back with `setTimeout`, spacing each frame by the speed slider (`101 - speed` ms per animation step).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## License
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Font "Abril Fatface" is licensed under the [SIL Open Font License](src/Abril_Fatface/OFL.txt). Project code is otherwise unlicensed.
